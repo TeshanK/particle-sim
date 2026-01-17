@@ -9,7 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g -DNDEBUG -march=native -fno-omit-frame-pointer")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -march=native")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -DNDEBUG")
 
 # =============================================================================
 # External Dependencies
@@ -53,11 +53,6 @@ add_executable(particle-sim
     src/systems/motion_system.cpp
     src/systems/collision_system.cpp
     src/systems/render_system.cpp
-)
-
-target_include_directories(particle-sim
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 target_link_libraries(particle-sim

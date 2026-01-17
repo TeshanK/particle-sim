@@ -10,7 +10,7 @@
 
 class RenderSystem {
   public:
-    RenderSystem(EntityManager *entityManager, float radius,
+    RenderSystem(EntityManager* entityManager, float radius,
                  float pixelsPerMeter = 100.0f)
         : m_entityManager{entityManager}, m_radius{radius},
           m_pixelsPerMeter{pixelsPerMeter} {}
@@ -26,7 +26,7 @@ class RenderSystem {
     [[nodiscard]] float getRadius() const { return m_radius; }
 
   private:
-    EntityManager *m_entityManager;
+    EntityManager* m_entityManager;
     float m_radius{0.015f};
     float m_pixelsPerMeter{100.0f};
 
@@ -34,6 +34,10 @@ class RenderSystem {
     GLuint m_positionSSBO{0}, m_colorSSBO{0};
     glm::mat4 m_projection{1.0f};
     std::unique_ptr<Shader> m_shader;
+
+    // Cached uniform locations
+    GLint projectionLoc;
+    GLint radiusLoc;
 };
 
 #endif // RENDER_SYSTEM_H

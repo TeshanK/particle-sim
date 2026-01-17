@@ -7,10 +7,6 @@ void CollisionSystem::update(float damping) {
 }
 
 void CollisionSystem::handleWallCollisions(float damping) {
-    auto &positions = m_entityManager->transform.Positions;
-    auto &velocities = m_entityManager->physics.Velocities;
-    auto &radii = m_entityManager->physics.Radii;
-
     for (unsigned int i = 0; i < m_entityManager->entityCount; ++i) {
         float radius = radii[i];
 
@@ -41,11 +37,6 @@ void CollisionSystem::handleWallCollisions(float damping) {
 }
 
 void CollisionSystem::handleObjectCollisions(float damping) {
-    auto &positions = m_entityManager->transform.Positions;
-    auto &velocities = m_entityManager->physics.Velocities;
-    auto &masses = m_entityManager->physics.Masses;
-    auto &radii = m_entityManager->physics.Radii;
-
     const int n = m_entityManager->entityCount;
 
     for (int i = 0; i < n; ++i) {

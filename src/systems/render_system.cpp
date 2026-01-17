@@ -6,7 +6,12 @@ bool RenderSystem::init() {
         std::make_unique<Shader>("../src/shaders/circle_instance.vert.glsl",
                                  "../src/shaders/circle_instance.frag.glsl");
 
-    // Quad geometry centered at origin, side lengths 1 (maps to UV in shader)
+    // Cache the uniform locations
+    projectionLoc = glGetUniformLocation(m_shader->ID, "projection");
+    radiusLoc = glGetUniformLocation(m_shader->ID, "radius");
+
+    // Quad geometry centered at origin, side lengths 1 (maps to UV in
+    // shader)
     float vertices[] = {0.5f,  0.5f,  0.0f, 0.5f,  -0.5f, 0.0f,
                         -0.5f, -0.5f, 0.0f, -0.5f, 0.5f,  0.0f};
     unsigned int indices[] = {0, 1, 3, 1, 2, 3};
@@ -28,7 +33,7 @@ bool RenderSystem::init() {
 
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
-                          (void *)0);
+                          (void*)0);
     glEnableVertexAttribArray(0);
 
     // Enable blending for smooth edges
@@ -63,13 +68,13 @@ void RenderSystem::beginFrame(float r, float g, float b, float a, int width,
     m_projection = glm::ortho(0.0f, worldWidthMeters, 0.0f, worldHeightMeters);
 
     m_shader->use();
-    m_shader->setMat4("projection", m_projection);
-    m_shader->setFloat("radius", m_radius);
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &m_projection[0][0]);
+    glUniform1f(radiusLoc, m_radius);
 }
 
 void RenderSystem::render() {
     // Upload positions to SSBO
-    const auto &positions = m_entityManager->transform.Positions;
+    const auto& positions = m_entityManager->transform.Positions;
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_positionSSBO);
     glBufferData(GL_SHADER_STORAGE_BUFFER, positions.size() * sizeof(glm::vec2),
                  positions.data(), GL_DYNAMIC_DRAW);
@@ -84,7 +89,7 @@ void RenderSystem::render() {
 
 void RenderSystem::uploadColors() {
     // Convert vec3 colors to vec4 for shader
-    const auto &colors = m_entityManager->properties.Colors;
+    const auto& colors = m_entityManager->properties.Colors;
     std::vector<glm::vec4> colorData(colors.size());
     for (size_t i = 0; i < colors.size(); ++i) {
         colorData[i] = glm::vec4(colors[i], 1.0f);
