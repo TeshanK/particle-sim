@@ -47,8 +47,12 @@ void CollisionSystem::handleObjectCollisions(float damping) {
             float r1 = radii[i];
             float r2 = radii[j];
 
-            float dist = glm::length(x2 - x1);
-            if (dist <= r1 + r2 && dist > 0.0f) {
+            glm::vec2 delta = x2 - x1;
+            float distSq = glm::dot(delta, delta);
+            if (distSq <= (r1 + r2) * (r1 + r2)) {
+
+                float dist = std::sqrt(distSq);
+
                 glm::vec2 v1 = velocities[i];
                 glm::vec2 v2 = velocities[j];
 
@@ -56,7 +60,7 @@ void CollisionSystem::handleObjectCollisions(float damping) {
                 float m2 = masses[j];
 
                 // Separate overlapping particles
-                glm::vec2 normal = glm::normalize(x2 - x1);
+                glm::vec2 normal = delta / dist;
                 float overlap = (r1 + r2 - dist) / 2.0f;
 
                 positions[i] -= overlap * normal;
