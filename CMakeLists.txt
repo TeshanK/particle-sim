@@ -6,9 +6,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g -DNDEBUG -march=native -fno-omit-frame-pointer")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -march=native -g -fno-omit-frame-pointer -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -DNDEBUG")
 
 # =============================================================================
@@ -54,6 +53,27 @@ add_executable(particle-sim
     src/systems/collision_system.cpp
     src/systems/render_system.cpp
 )
+
+# Apply strict warnings only to particle-sim
+target_compile_options(particle-sim PRIVATE -Wall -Wextra -Wconversion -Wshadow)
+
+# Enable UBSan and ASan only for debug builds
+target_compile_options(particle-sim PRIVATE
+    $<$<CONFIG:Debug>:-fsanitize=undefined,address -fno-omit-frame-pointer -g>
+)
+target_link_options(particle-sim PRIVATE
+    $<$<CONFIG:Debug>:-fsanitize=undefined,address>
+)
+
+# Enable clang-tidy only for particle-sim
+set_target_properties(particle-sim PROPERTIES 
+    CXX_CLANG_TIDY "clang-tidy-21;-checks=-*,bugprone-*,cert-*,clang-analyzer-*,concurrency-*,misc-*,modernize-*,performance-*,portability-*,readability-*,-readability-identifier-length,-readability-uppercase-literal-suffix,-readability-braces-around-statements,-readability-implicit-bool-conversion,-readability-magic-numbers,-readability-convert-member-functions-to-static,-bugprone-easily-swappable-parameters,-bugprone-narrowing-conversions,-cert-msc32-c,-cert-msc51-cpp,-misc-const-correctness,-misc-include-cleaner,-misc-use-anonymous-namespace,-modernize-use-nullptr,-modernize-avoid-c-arrays,-clang-analyzer-deadcode.DeadStores"
+)
+
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(particle-sim PUBLIC OpenMP::OpenMP_CXX)
+endif()
 
 target_link_libraries(particle-sim
     PRIVATE

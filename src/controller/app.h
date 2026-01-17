@@ -15,8 +15,8 @@
 class App {
   public:
     App(unsigned int particleCount, float temperature = 0.125f,
-        float mass = 1.0f, unsigned int screenWidth = 800,
-        unsigned int screenHeight = 600)
+        float mass = 1.0f, int screenWidth = 800,
+        int screenHeight = 600)
         : m_particleCount{particleCount}, m_temperature{temperature},
           m_mass{mass}, m_screenWidth{screenWidth},
           m_screenHeight{screenHeight} {}
@@ -27,19 +27,19 @@ class App {
     unsigned int m_particleCount;
     float m_temperature;
     float m_mass;
-    unsigned int m_screenWidth, m_screenHeight;
+    int m_screenWidth, m_screenHeight;
 
     GLFWwindow* window = nullptr;
     std::unique_ptr<PhysicsWorld> physicsWorld = nullptr;
 
     void initializeWindow();
     void cleanup();
-    void processInput(GLFWwindow* window);
+    void processInput(GLFWwindow* win);
     static void framebuffer_size_callback(GLFWwindow* window, int width,
                                           int height);
 };
 
-inline auto getMilliseconds() -> unsigned long {
+inline auto getMilliseconds() -> long {
     auto now = std::chrono::system_clock::now();
     auto duration = now.time_since_epoch();
     auto milliseconds =

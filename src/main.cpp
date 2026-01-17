@@ -6,7 +6,13 @@
 int main() {
     std::cout << "Starting Particle Simulation\n";
 
-    std::unique_ptr<App> app = std::make_unique<App>(6400);
+#ifndef NDEBUG
+    const unsigned int particleCount = 10;
+#else
+    const unsigned int particleCount = 6400;
+#endif
+
+    std::unique_ptr<App> app = std::make_unique<App>(particleCount);
     app->Run();
 
     return 0;

@@ -12,7 +12,7 @@ void PhysicsWorld::addRandomParticles(unsigned int count, float temperature,
 
 void PhysicsWorld::uploadColors() { renderSystem->uploadColors(); }
 
-void PhysicsWorld::setDimensions(unsigned int width, unsigned int height) {
+void PhysicsWorld::setDimensions(int width, int height) {
     m_width = width;
     m_height = height;
     m_worldWidthMeters = static_cast<float>(width) / k_pixelsPerMeter;

@@ -12,7 +12,7 @@ constexpr float k_defaultRadius = 0.015f;
 
 class PhysicsWorld {
   public:
-    PhysicsWorld(unsigned int width, unsigned int height)
+    PhysicsWorld(int width, int height)
         : m_width{width}, m_height{height},
           m_worldWidthMeters{static_cast<float>(width) / k_pixelsPerMeter},
           m_worldHeightMeters{static_cast<float>(height) / k_pixelsPerMeter},
@@ -29,7 +29,7 @@ class PhysicsWorld {
     void addRandomParticles(unsigned int count, float temperature, float mass);
     void uploadColors();
 
-    void setDimensions(unsigned int width, unsigned int height);
+    void setDimensions(int width, int height);
 
     void step(float dt);
     void beginFrame();
@@ -44,8 +44,8 @@ class PhysicsWorld {
     }
 
   private:
-    unsigned int m_width{800};
-    unsigned int m_height{600};
+    int m_width{800};
+    int m_height{600};
     float m_worldWidthMeters{0.0f};
     float m_worldHeightMeters{0.0f};
 

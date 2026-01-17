@@ -1,4 +1,5 @@
 #include "collision_system.h"
+#include <cstddef>
 #include <glm/geometric.hpp>
 
 void CollisionSystem::update(float damping) {
@@ -37,10 +38,10 @@ void CollisionSystem::handleWallCollisions(float damping) {
 }
 
 void CollisionSystem::handleObjectCollisions(float damping) {
-    const int n = m_entityManager->entityCount;
+    const size_t n = m_entityManager->entityCount;
 
-    for (int i = 0; i < n; ++i) {
-        for (int j = i + 1; j < n; ++j) {
+    for (std::size_t i = 0; i < n; ++i) {
+        for (std::size_t j = i + 1; j < n; ++j) {
             glm::vec2 x1 = positions[i];
             glm::vec2 x2 = positions[j];
 
@@ -71,7 +72,6 @@ void CollisionSystem::handleObjectCollisions(float damping) {
                 x2 = positions[j];
 
                 // Elastic collision response
-                glm::vec2 dx = x1 - x2;
                 float dotProduct = glm::dot(x1 - x2, x1 - x2);
 
                 if (dotProduct > 0.0f) {

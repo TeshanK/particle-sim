@@ -29,15 +29,15 @@ static float randomGaussian(float mean, float stddev) {
 }
 
 void EntityManager::makeRandomEntities(unsigned int count,
-                                       unsigned int screenWidth,
-                                       unsigned int screenHeight,
+                                       int screenWidth,
+                                       int screenHeight,
                                        float pixelsPerMeter, float temperature,
                                        float mass) {
     const float XPOS_LOW = 0;
-    const float XPOS_HIGH = std::floor(screenWidth / pixelsPerMeter);
+    const float XPOS_HIGH = std::floor(static_cast<float>(screenWidth) / pixelsPerMeter);
 
     const float YPOS_LOW = 0;
-    const float YPOS_HIGH = std::floor(screenHeight / pixelsPerMeter);
+    const float YPOS_HIGH = std::floor(static_cast<float>(screenHeight) / pixelsPerMeter);
 
     const float RADIUS = 0.015f;
 
