@@ -3,8 +3,8 @@
 bool RenderSystem::init() {
     // Create shader
     m_shader =
-        std::make_unique<Shader>("../src/shaders/circle_instance.vert.glsl",
-                                 "../src/shaders/circle_instance.frag.glsl");
+        std::make_unique<Shader>("shaders/circle_instance.vert.glsl",
+                                 "shaders/circle_instance.frag.glsl");
 
     // Cache the uniform locations
     projectionLoc = glGetUniformLocation(m_shader->ID, "projection");
