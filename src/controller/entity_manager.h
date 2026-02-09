@@ -6,7 +6,6 @@
 #include "../components/transform.h"
 
 #include <glm/glm.hpp>
-#include <iterator>
 
 class EntityManager {
   public:
